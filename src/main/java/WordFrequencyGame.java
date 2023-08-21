@@ -14,32 +14,24 @@ public class WordFrequencyGame {
         } else {
             try {
                 List<WordFrequencyInfo> wordFrequencyInfoList = getWordFrequencyInfosList(inputStr);
-
-
                 return generatePrintLines(wordFrequencyInfoList);
             } catch (Exception e) {
                 return CALCULATE_ERROR;
             }
         }
     }
+
     private List<WordFrequencyInfo> getWordFrequencyInfosList(String inputStr) {
         String[] words = inputStr.split(SPACE_DELIMITER);
+        List<WordFrequencyInfo> wordFrequencyInfoList = Arrays.stream(words)
+                .map(word -> new WordFrequencyInfo(word, 1))
+                .collect(Collectors.toList());
 
-        List<WordFrequencyInfo> wordFrequencyInfoList = new ArrayList<>();
-        for (String word : words) {
-            WordFrequencyInfo wordFrequencyInfo = new WordFrequencyInfo(word, 1);
-            wordFrequencyInfoList.add(wordFrequencyInfo);
-        }
-
-        Map<String, List<WordFrequencyInfo>> wordFrequencyMap = getListMap(wordFrequencyInfoList);
-        List<WordFrequencyInfo> frequencyInfos = new ArrayList<>();
-        for (Map.Entry<String, List<WordFrequencyInfo>> entry : wordFrequencyMap.entrySet()) {
-            WordFrequencyInfo wordFrequencyInfo = new WordFrequencyInfo(entry.getKey(), entry.getValue().size());
-            frequencyInfos.add(wordFrequencyInfo);
-        }
-        wordFrequencyInfoList = frequencyInfos;
-        wordFrequencyInfoList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
-        return wordFrequencyInfoList;
+        return wordFrequencyInfoList.stream()
+                .collect(Collectors.groupingBy(WordFrequencyInfo::getWord))
+                .entrySet().stream()
+                .map(entry -> new WordFrequencyInfo(entry.getKey(), entry.getValue().size())).sorted((firstWord,
+                  secondWord) -> secondWord.getWordCount() - firstWord.getWordCount()).collect(Collectors.toList());
     }
 
     private static String generatePrintLines(List<WordFrequencyInfo> wordFrequencyInfoList) {
