@@ -40,10 +40,5 @@ public class WordFrequencyGame {
                 .collect(Collectors.joining(NEWLINE_DELIMETER));
     }
 
-    private Map<String, List<WordFrequencyInfo>> getListMap(List<WordFrequencyInfo> wordFrequencyInfoList) {
-        return wordFrequencyInfoList.stream()
-                .collect(Collectors.groupingBy(WordFrequencyInfo::getWord));
-    }
-
 
 }
