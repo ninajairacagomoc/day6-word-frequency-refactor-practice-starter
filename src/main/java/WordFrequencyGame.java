@@ -14,6 +14,8 @@ public class WordFrequencyGame {
         } else {
             try {
                 List<WordFrequencyInfo> wordFrequencyInfoList = getWordFrequencyInfosList(inputStr);
+
+
                 return generatePrintLines(wordFrequencyInfoList);
             } catch (Exception e) {
                 return CALCULATE_ERROR;
@@ -28,6 +30,7 @@ public class WordFrequencyGame {
             WordFrequencyInfo wordFrequencyInfo = new WordFrequencyInfo(word, 1);
             wordFrequencyInfoList.add(wordFrequencyInfo);
         }
+
         Map<String, List<WordFrequencyInfo>> wordFrequencyMap = getListMap(wordFrequencyInfoList);
         List<WordFrequencyInfo> frequencyInfos = new ArrayList<>();
         for (Map.Entry<String, List<WordFrequencyInfo>> entry : wordFrequencyMap.entrySet()) {
@@ -46,18 +49,8 @@ public class WordFrequencyGame {
     }
 
     private Map<String, List<WordFrequencyInfo>> getListMap(List<WordFrequencyInfo> wordFrequencyInfoList) {
-        Map<String, List<WordFrequencyInfo>> wordFrequencyMap = new HashMap<>();
-        for (WordFrequencyInfo wordFrequencyInfo : wordFrequencyInfoList) {
-            if (!wordFrequencyMap.containsKey(wordFrequencyInfo.getWord())) {
-                ArrayList arr = new ArrayList<>();
-                arr.add(wordFrequencyInfo);
-                wordFrequencyMap.put(wordFrequencyInfo.getWord(), arr);
-            } else {
-                wordFrequencyMap.get(wordFrequencyInfo.getWord()).add(wordFrequencyInfo);
-            }
-        }
-
-        return wordFrequencyMap;
+        return wordFrequencyInfoList.stream()
+                .collect(Collectors.groupingBy(WordFrequencyInfo::getWord));
     }
 
 
