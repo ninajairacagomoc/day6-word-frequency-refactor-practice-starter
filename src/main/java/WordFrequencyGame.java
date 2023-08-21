@@ -11,17 +11,17 @@ public class WordFrequencyGame {
     public static final String SPACE_CHAR = " ";
     public static final String CALCULATE_ERROR = "Calculate Error";
 
-    public String getResult(String inputStr) {
+    public String getResult(String sentence) {
 
 
-        if (inputStr.split(SPACE_DELIMITER).length == 1) {
-            return inputStr + " 1";
+        if (sentence.split(SPACE_DELIMITER).length == 1) {
+            return sentence + " 1";
         } else {
 
             try {
 
                 //split the input string with 1 to n pieces of spaces
-                String[] words = inputStr.split(SPACE_DELIMITER);
+                String[] words = sentence.split(SPACE_DELIMITER);
 
                 List<WordFrequencyInfo> wordFrequencyInfoList = new ArrayList<>();
                 for (String word : words) {
@@ -42,18 +42,22 @@ public class WordFrequencyGame {
 
                 wordFrequencyInfoList.sort((firstWord, secondWord) -> secondWord.getWordCount() - firstWord.getWordCount());
 
-                StringJoiner joiner = new StringJoiner(NEWLINE_DELIMETER);
-                for (WordFrequencyInfo word : wordFrequencyInfoList) {
-                    String s = word.getWord() + SPACE_CHAR + word.getWordCount();
-                    joiner.add(s);
-                }
-                return joiner.toString();
+                return generatePrintLines(wordFrequencyInfoList);
             } catch (Exception e) {
 
 
                 return CALCULATE_ERROR;
             }
         }
+    }
+
+    private static String generatePrintLines(List<WordFrequencyInfo> wordFrequencyInfoList) {
+        StringJoiner joiner = new StringJoiner(NEWLINE_DELIMETER);
+        for (WordFrequencyInfo word : wordFrequencyInfoList) {
+            String s = word.getWord() + SPACE_CHAR + word.getWordCount();
+            joiner.add(s);
+        }
+        return joiner.toString();
     }
 
 
